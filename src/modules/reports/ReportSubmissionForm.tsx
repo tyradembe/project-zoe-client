@@ -74,9 +74,10 @@ const ReportSubmissionForm = () => {
     const emptyFields = requiredFields.filter(
       (field) => !values[field.name],
     );
-
     if (emptyFields.length > 0) {
-      Toast.error('Please fill in all required fields');
+      const emptyFieldLabels = emptyFields.map(field => field.label);
+      const labelsCommaSeparated = emptyFieldLabels.join(', ');
+      Toast.error(`Looks like some required fields are missing: ${labelsCommaSeparated}. Please complete these and try again.`);
       return;
     }
 
@@ -91,10 +92,11 @@ const ReportSubmissionForm = () => {
         Toast.error('Sorry, there was an error when submitting the report. Please retry.');
       },
     );
+
   };
 
   function getFieldComponent(field: IReportField, formData: any, handleChange: any) {
-    const { name, label, type } = field;
+    const { name, label, type, hidden } = field;
     const value = formData[name] || '';
     const options = field.options ? reportOptionToFieldOptions(field.options) : [];
 
@@ -123,6 +125,8 @@ const ReportSubmissionForm = () => {
             label={label}
             variant="outlined"
             margin="none"
+            isHidden={hidden}
+            type="text"
             required={field.required}
           />
         );
@@ -179,13 +183,15 @@ const ReportSubmissionForm = () => {
             <XTextInput
               id={name}
               name={name}
+              required={false}
               value={value}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
               }
               label={label}
               variant="outlined"
               margin="none"
-              type="number"
+              isHidden={hidden}
+              type= "number"
             />
         );
       default:

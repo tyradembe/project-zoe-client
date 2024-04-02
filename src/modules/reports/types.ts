@@ -9,6 +9,7 @@ export interface IReportField {
   type: string,
   options?: IReportFieldOption[],
   required?: boolean
+  hidden?: boolean
 }
 
 export interface IReportFieldOption {

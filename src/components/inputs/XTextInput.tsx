@@ -5,10 +5,12 @@ import { hasValue } from './inputHelpers';
 
 interface IProps {
   name: string;
+  isHidden?: boolean;
 }
 
 const XTextInput = ({
   name,
+  isHidden = false,
   margin = 'normal',
   ...props
 }: TextFieldProps & IProps) => {
@@ -31,7 +33,9 @@ const XTextInput = ({
 
   const error = hasValue(meta.error) ? meta.error : undefined;
   const showError = Boolean(error && meta.touched);
-
+  if (isHidden) {
+    return <input type="hidden" name={field.name} value={field.value} onChange={field.onChange} />;
+  }  
   return (
     <TextField
       {...field}
