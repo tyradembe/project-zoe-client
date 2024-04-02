@@ -40,7 +40,7 @@ const endPeriod = lastDayOfWeek(today);
 
 const ReportSubmissions = () => {
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState<any>({ limit: 5000 });
+  const [filter, setFilter] = useState<any>({ limit: 300 });
   const classes = useStyles();
   const history = useHistory();
   const { reportId } = useParams<any>();
