@@ -94,12 +94,12 @@ const ReportList: React.FC = () => {
               <ListItem key={report.id} alignItems="flex-start" disableGutters>
                 <ListItemText primary={report.name} />
                 <div className={classes.buttonContainer}>
-                  <Button
+                  {report.fields && report.fields.length && (<Button
                     variant="outlined"
                     color="primary"
                     onClick={() => handleSubmitReport(report)}>
                     Submit Report
-                  </Button>
+                  </Button>)}
                   {hasAnyRole(user, [appPermissions.roleReportViewSubmissions]) && (
                     <IconButton
                       size="medium"

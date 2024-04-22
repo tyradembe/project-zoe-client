@@ -24,6 +24,7 @@ export interface IReportMetadata {
 
 export interface IReport {
   id: number;
+  fields?: IReportField[],
   title?: string;
   name?: string;
   metadata?: IReportMetadata,

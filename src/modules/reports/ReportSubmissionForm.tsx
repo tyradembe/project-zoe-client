@@ -100,15 +100,15 @@ const ReportSubmissionForm = () => {
     const value = formData[name] || '';
     const options = field.options ? reportOptionToFieldOptions(field.options) : [];
 
-    if (name == 'smallGroupName') {
+    if (name == 'smallGroupId') {
       return <XRemoteSelect
         remote={remoteRoutes.groupsCombo}
         filter={{ 'categories[]': 'Missional Community' }}
         parser={({ name, id }: any) => ({ name, id })}
-        name="smallGroupName"
+        name={name}
         label={label}
         variant="outlined"
-        customOnChange={(value: string) => handleSmallGroupChange(name, value)}
+        //customOnChange={(value: string) => handleSmallGroupChange(name, value)}
         margin="none"
       />;
     }
