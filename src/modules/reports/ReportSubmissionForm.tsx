@@ -10,9 +10,7 @@ import XSelectInput from '../../components/inputs/XSelectInput';
 import XTextAreaInput from '../../components/inputs/XTextAreaInput';
 import { localRoutes, remoteRoutes } from '../../data/constants';
 import Toast from '../../utils/Toast';
-import {
-  ICreateReportSubmissionDto, IReportField,
-} from './types';
+import { ICreateReportSubmissionDto, IReportField } from './types';
 import { reportOptionToFieldOptions } from '../../components/inputs/inputHelpers';
 import { XRemoteSelect } from '../../components/inputs/XRemoteSelect';
 import { get, post } from '../../utils/ajax';
@@ -59,8 +57,8 @@ const ReportSubmissionForm = () => {
   const handleSmallGroupChange = (name: string, value: any) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value.name,
-      smallGroupId: value.id,
+      smallGroupName: value?.name,
+      smallGroupId: value?.id,
     }));
   };
 
@@ -71,13 +69,13 @@ const ReportSubmissionForm = () => {
     };
     // Validate required fields
     const requiredFields = reportFields.filter((field) => field.required);
-    const emptyFields = requiredFields.filter(
-      (field) => !values[field.name],
-    );
+    const emptyFields = requiredFields.filter((field) => !values[field.name]);
     if (emptyFields.length > 0) {
-      const emptyFieldLabels = emptyFields.map(field => field.label);
+      const emptyFieldLabels = emptyFields.map((field) => field.label);
       const labelsCommaSeparated = emptyFieldLabels.join(', ');
-      Toast.error(`Looks like some required fields are missing: ${labelsCommaSeparated}. Please complete these and try again.`);
+      Toast.error(
+        `Looks like some required fields are missing: ${labelsCommaSeparated}. Please complete these and try again.`,
+      );
       return;
     }
 
@@ -89,28 +87,39 @@ const ReportSubmissionForm = () => {
         history.push(localRoutes.reports);
       },
       () => {
-        Toast.error('Sorry, there was an error when submitting the report. Please retry.');
+        Toast.error(
+          'Sorry, there was an error when submitting the report. Please retry.',
+        );
       },
     );
-
   };
 
-  function getFieldComponent(field: IReportField, formData: any, handleChange: any) {
+  function getFieldComponent(
+    field: IReportField,
+    formData: any,
+    handleChange: any,
+  ) {
     const { name, label, type, hidden } = field;
     const value = formData[name] || '';
-    const options = field.options ? reportOptionToFieldOptions(field.options) : [];
+    const options = field.options
+      ? reportOptionToFieldOptions(field.options)
+      : [];
 
-    if (name == 'smallGroupId') {
-      return <XRemoteSelect
-        remote={remoteRoutes.groupsCombo}
-        filter={{ 'categories[]': 'Missional Community' }}
-        parser={({ name, id }: any) => ({ name, id })}
-        name={name}
-        label={label}
-        variant="outlined"
-        //customOnChange={(value: string) => handleSmallGroupChange(name, value)}
-        margin="none"
-      />;
+    if (name == 'smallGroupName') {
+      return (
+        <XRemoteSelect
+          remote={remoteRoutes.groupsCombo}
+          filter={{ 'categories[]': 'Missional Community' }}
+          parser={({ name, id }: any) => ({ name, id })}
+          name={name}
+          label={label}
+          variant="outlined"
+          customOnChange={(value: string) =>
+            handleSmallGroupChange(name, value)
+          }
+          margin="none"
+        />
+      );
     }
 
     switch (type) {
@@ -120,7 +129,8 @@ const ReportSubmissionForm = () => {
             id={name}
             name={name}
             value={value}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(name, e.target.value)
             }
             label={label}
             variant="outlined"
@@ -136,7 +146,9 @@ const ReportSubmissionForm = () => {
             id={name}
             name={name}
             value={value}
-            onChange={(value: MaterialUiPickersDate) => handleChange(name, value)}
+            onChange={(value: MaterialUiPickersDate) =>
+              handleChange(name, value)
+            }
             label={label}
             variant="outlined"
             margin="none"
@@ -147,7 +159,8 @@ const ReportSubmissionForm = () => {
         return (
           <XRadioInput
             name={name}
-            customOnChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
+            customOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(name, e.target.value)
             }
             label={label}
             options={options}
@@ -159,7 +172,8 @@ const ReportSubmissionForm = () => {
           <XSelectInput
             name={name}
             label={label}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(name, e.target.value)
             }
             options={options}
             required={field.required}
@@ -171,7 +185,8 @@ const ReportSubmissionForm = () => {
             id={name}
             name={name}
             value={value}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(name, e.target.value)
             }
             label={label}
             variant="outlined"
@@ -180,19 +195,20 @@ const ReportSubmissionForm = () => {
         );
       case 'number':
         return (
-            <XTextInput
-              id={name}
-              name={name}
-              required={false}
-              value={value}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(name, e.target.value)
-              }
-              label={label}
-              variant="outlined"
-              margin="none"
-              isHidden={hidden}
-              type= "number"
-            />
+          <XTextInput
+            id={name}
+            name={name}
+            required={false}
+            value={value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(name, e.target.value)
+            }
+            label={label}
+            variant="outlined"
+            margin="none"
+            isHidden={hidden}
+            type="number"
+          />
         );
       default:
         return null;
@@ -204,19 +220,19 @@ const ReportSubmissionForm = () => {
   }
 
   return (
-    <Layout title='Report Submission Form'>
+    <Layout title="Report Submission Form">
       <XForm
         onSubmit={handleSubmit}
         submitButtonAlignment="left"
         initialValues={formData}
       >
-          <Grid container spacing={2}>
-            {reportFields.map((field) => (
-              <Grid item xs={12} md={8} key={field.name}>
-                {getFieldComponent(field, formData, handleChange)}
-              </Grid>
-            ))}
-          </Grid>
+        <Grid container spacing={2}>
+          {reportFields.map((field) => (
+            <Grid item xs={12} md={8} key={field.name}>
+              {getFieldComponent(field, formData, handleChange)}
+            </Grid>
+          ))}
+        </Grid>
       </XForm>
     </Layout>
   );
