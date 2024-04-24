@@ -28,11 +28,13 @@ const initialData: any = {
   limit: 200,
   skip: 0,
 };
-const EventsFilter = ({ onFilter, showCategoriesFilter, showGroupsFilter, showParentGroupsFilter, parentGroupName }: IProps) => {
+const EventsFilter = ({
+  onFilter, showCategoriesFilter, showGroupsFilter, showParentGroupsFilter, parentGroupName,
+}: IProps) => {
   const { data, handleComboChange, handleDateChange } = useFilter({
     initialData,
     onFilter,
-    comboFields: ['categoryIdList', 'groupIdList','parentGroupIdList'],
+    comboFields: ['categoryIdList', 'groupIdList', 'parentGroupIdList'],
   });
   return (
     <form>
@@ -90,7 +92,7 @@ const EventsFilter = ({ onFilter, showCategoriesFilter, showGroupsFilter, showPa
         {showParentGroupsFilter && (
           <Grid item xs={12} md>
             <PRemoteSelect
-              remote={`${remoteRoutes.groupsCombo}?categories=${parentGroupName}`} 
+              remote={`${remoteRoutes.groupsCombo}?categories=${parentGroupName}`}
               name="parentGroupIdList"
               label={parentGroupName || 'Zone'}
               variant="outlined"

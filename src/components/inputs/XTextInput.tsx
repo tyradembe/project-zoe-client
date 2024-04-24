@@ -35,7 +35,7 @@ const XTextInput = ({
   const showError = Boolean(error && meta.touched);
   if (isHidden) {
     return <input type="hidden" name={field.name} value={field.value} onChange={field.onChange} />;
-  }  
+  }
   return (
     <TextField
       {...field}

@@ -138,7 +138,7 @@ export const remoteRoutes = {
 
   reports: `${apiBaseUrl}/api/reports`,
   reportsSubmit: `${apiBaseUrl}/api/reports/submit`,
-  reportsCategories: `${apiBaseUrl}api/reports/category`,
+  reportsCategories: `${apiBaseUrl}/api/reports/category`,
 
   contactsCompany: `${apiBaseUrl}/api/crm/contact/company`,
   contactsAvatar: `${apiBaseUrl}/api/crm/contact/avatar`,
