@@ -13,6 +13,12 @@ export interface IUserDto {
   roles: string[];
 }
 
+export interface IUsersFilter {
+  query?: string;
+  skip?: number;
+  limit?: number;
+}
+
 export interface IRoles {
   id: number;
   role: string;
