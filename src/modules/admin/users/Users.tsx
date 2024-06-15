@@ -26,7 +26,7 @@ import Loading from '../../../components/Loading';
 import ListHeader from '../../../components/ListHeader';
 import { hasAnyRole } from '../../../data/appRoles';
 import { IState } from '../../../data/types';
-import { IUserDto } from './types';
+import { IUserDto, IUsersFilter } from './types';
 
 const columns: XHeadCell[] = [
   {
@@ -72,7 +72,8 @@ const columns: XHeadCell[] = [
   {
     name: 'roles',
     label: 'Roles',
-    render: (roles: string[]) => roles?.map((it) => (
+    render: (roles: string[]) =>
+      roles?.map((it) => (
         <Chip
           color={it.includes(': is disabled') ? 'default' : 'primary'}
           variant="outlined"
@@ -81,7 +82,7 @@ const columns: XHeadCell[] = [
           size="small"
           label={it}
         />
-    )),
+      )),
   },
 ];
 
@@ -137,7 +138,7 @@ const toMobile = (data: IUserDto): IMobileRow => {
 
 const Users = () => {
   const history = useHistory();
-  const [filter, setFilter] = useState<any>({});
+  const [filter, setFilter] = useState<IUsersFilter>({ limit: 500 });
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
   const [selected, setSelected] = useState<any | null>(null);
@@ -146,7 +147,7 @@ const Users = () => {
   useEffect(() => {
     setLoading(true);
     search(
-      `${remoteRoutes.users}?limit=1000`,
+      remoteRoutes.users,
       filter,
       (resp) => {
         setData(resp);
@@ -166,9 +167,7 @@ const Users = () => {
   }
 
   const handleEdit = (dt: any) => {
-    const {
-      id, username, contactId, fullName, roles, isActive,
-    } = dt;
+    const { id, username, contactId, fullName, roles, isActive } = dt;
     const toEdit = {
       id,
       username,
