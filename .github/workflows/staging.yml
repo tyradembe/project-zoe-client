@@ -1,8 +1,8 @@
-name: Build and deploy Project Zoe client
+name: Staging - Build and deploy Project Zoe client
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
  
 jobs:
   build-and-deploy:
@@ -36,9 +36,9 @@ jobs:
           
       - name: Create an .env file
         env:
-          PROD_ENV_FILE: ${{ secrets.PROD_ENV_FILE }}
+          STAGING_ENV_FILE: ${{ secrets.STAGING_ENV_FILE }}
         run: |
-          echo $PROD_ENV_FILE | base64 --decode > ./.env
+          echo $STAGING_ENV_FILE | base64 --decode > ./.env
       
       # Temporarily skip eslint by using DISABLE_ESLINT_PLUGIN
       - name: Build
@@ -63,6 +63,6 @@ jobs:
           DO_HOST: ${{ secrets.DO_HOST }}
 
       - name: Deploy the app
-        run: rsync -rtvO ./build/ project-zoe-prod-1:/opt/project-zoe-client/build/
+        run: rsync -rtvO ./build/ project-zoe-prod-1:/opt/staging/project-zoe-client/build/
             
  
